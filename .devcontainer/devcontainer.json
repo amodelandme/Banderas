@@ -29,8 +29,6 @@
   },
   // Mount Pi auth/config and the toolkit into the container
   "mounts": [
-    "source=${localEnv:HOME}/.pi,target=/home/vscode/.pi,type=bind",
-    "source=${localEnv:HOME}/Dev/pi-toolkit,target=/home/vscode/pi-toolkit,type=bind",
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
   "containerEnv": {
@@ -39,10 +37,10 @@
   // Both must match to avoid file permission issues
   "remoteUser": "vscode",
   "containerUser": "vscode",
-  "postCreateCommand": "sudo groupadd -f docker && sudo usermod -aG docker vscode && npm install -g @earendil-works/pi-coding-agent && dotnet restore Banderas.sln && dotnet tool restore",
+  "postCreateCommand": "dotnet restore Banderas.sln && dotnet tool restore",
   // Symlink toolkit into the workspace, set up git safe.directory, join Postgres network
   // Symlink toolkit into workspace, bridge ~/dev/pi-toolkit for settings.json, git + network setup
-  "postStartCommand": "mkdir -p /home/vscode/dev && ln -sfn /home/vscode/pi-toolkit /home/vscode/dev/pi-toolkit && ln -sfn /home/vscode/pi-toolkit/skills ${containerWorkspaceFolder}/.skills && ln -sfn /home/vscode/pi-toolkit/agent.md ${containerWorkspaceFolder}/agent.md && git config --global --add safe.directory ${containerWorkspaceFolder} && docker network connect featureflagservice_default $(cat /etc/hostname) 2>/dev/null || true",
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -16,5 +16,6 @@
   ],
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "dotnet.defaultSolution": "Banderas.sln"
 }
